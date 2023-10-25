@@ -12,3 +12,8 @@ down: prelude
 .PHONY: prelude
 prelude: ./srcs/.env
     sh ./src/init.sh
+
+.PHONY: dev
+dev: prelude
+	docker compose --env-file ./srcs/.env -f ./src/docker-compose.yml down -v
+	docker compose --env-file ./srcs/.env -f ./src/docker-compose.yml up -d --build

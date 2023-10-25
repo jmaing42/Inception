@@ -30,12 +30,12 @@ services:
         depends_on:
             - wp
         volumes:
-            - wordpress:/var/www/html
+            - wordpress:/app
         networks:
             - inception
         env_file:
             - ../srcs/.env
-        restart: always
+        # restart: always
     wp:
         container_name: wp
         build: ./service/wp/.
@@ -43,20 +43,20 @@ services:
         depends_on:
             - db
         volumes:
-            - wordpress:/var/www/html
+            - wordpress:/app
         env_file:
-            - .env
+            - ../srcs/.env
         networks:
             - inception
-        restart: always
+        # restart: always
     db:
         container_name: db
         build: ./service/db/.
         image: db
         volumes:
-            - mariadb:/var/lib/mysql
+            - mariadb:/app
         env_file:
-            - .env
+            - ../srcs/.env
         networks:
             - inception
-        restart: always
+        # restart: always
