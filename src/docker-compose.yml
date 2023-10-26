@@ -23,7 +23,10 @@ networks:
 services:
     http:
         container_name: http
-        build: ./service/http/.
+        build:
+            context: ./service/http/.
+            args:
+                INTRA_LOGIN: ${INTRA_LOGIN}
         image: http
         ports:
             - "443:443"
@@ -35,11 +38,11 @@ services:
             - inception
         env_file:
             - ../srcs/.env
-        # restart: always
+        restart: always
     wp:
         container_name: wp
         build: ./service/wp/.
-        image: wp:42
+        image: wp
         depends_on:
             - db
         volumes:
@@ -48,10 +51,15 @@ services:
             - ../srcs/.env
         networks:
             - inception
-        # restart: always
+        restart: always
     db:
         container_name: db
-        build: ./service/db/.
+        build:
+            context: ./service/db/.
+            args:
+                MARIADB_DATABASE: ${MARIADB_DATABASE}
+                MARIADB_USER: ${MARIADB_USER}
+                MARIADB_PASSWORD: ${MARIADB_PASSWORD}
         image: db
         volumes:
             - mariadb:/app
@@ -59,4 +67,4 @@ services:
             - ../srcs/.env
         networks:
             - inception
-        # restart: always
+        restart: always

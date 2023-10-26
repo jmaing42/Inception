@@ -1,6 +1,7 @@
 FROM alpine:3.17
 
 COPY init.sh /root/init.sh
+COPY app.conf /root/app.conf
 
 RUN \
     apk update \
@@ -11,5 +12,4 @@ RUN \
 
 EXPOSE 9000
 
-ENTRYPOINT ["dumb-init", "--", "php-fpm81", "-F", "-R"]
-CMD ["sh", "/root/init.sh"]
+ENTRYPOINT ["dumb-init", "--", "sh", "-c", "sh /root/init.sh && php-fpm81 -F -R -y /root/app.conf"]

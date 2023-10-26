@@ -1,5 +1,12 @@
 FROM alpine:3.17
 
+ARG MARIADB_DATABASE
+ENV MARIADB_DATABASE $MARIADB_DATABASE
+ARG MARIADB_USER
+ENV MARIADB_USER $MARIADB_USER
+ARG MARIADB_PASSWORD
+ENV MARIADB_PASSWORD $MARIADB_PASSWORD
+
 COPY template.sql /root/template.sql
 
 RUN \
@@ -13,4 +20,4 @@ RUN \
 
 EXPOSE 3306
 
-ENTRYPOINT ["dumb-init", "--", "mariadbd-safe", "--datadir", "/app", "--user", "root", "--init-file", "/root/app.sql"]
+ENTRYPOINT ["dumb-init", "--", "mariadbd", "--datadir=/app", "--user=root", "--init-file=/root/app.sql", "--skip_networking=0", "--bind-address=0.0.0.0"]

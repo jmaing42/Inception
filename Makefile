@@ -11,7 +11,9 @@ down: prelude
 
 .PHONY: prelude
 prelude: ./srcs/.env
-    sh ./src/init.sh
+
+./srcs/.env:
+	sh ./src/init.sh
 
 .PHONY: dev
 dev: prelude
