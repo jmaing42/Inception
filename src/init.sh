@@ -4,6 +4,17 @@ set -e
 
 cd "$(dirname "$0")"
 
+input() {
+    VARIABLE_NAME="$1"
+
+    printf "$VARIABLE_NAME="
+    if ! IFS= read -r VALUE; then
+        echo "Failed to input VALUE."
+        exit 1
+    fi
+    echo "${VARIABLE_NAME}=${VALUE}" >> .env
+}
+
 [ -f "../srcs/.env" ] || {
     printf ".env file not found. Would you like to copy the sample .env file? [y/N] > "
     while true; do
@@ -21,33 +32,19 @@ cd "$(dirname "$0")"
                     read -r RESPONSE
                     case "$RESPONSE" in
                         [yY][eE][sS]|[yY]|"")
-                            if [ -n "$EDITOR" ]; then
-                                $EDITOR .env
-                                while ! sh ./validate.sh; do
-                                    printf "Invalid .env file. edit once more? [Y/n] > "
-                                    while true; do
-                                        read -r RESPONSE
-                                        case "$RESPONSE" in
-                                            [yY][eE][sS]|[yY]|"")
-                                                $EDITOR .env
-                                                break
-                                                ;;
-                                            [Nn][Oo]|[Nn])
-                                                exit 1
-                                                ;;
-                                            *)
-                                                printf "Response not recognized. Please enter one of y or n [Y/n] > "
-                                                ;;
-                                        esac
-                                    done
-                                done
-                                cp .env ../srcs/.env
-                                echo "Successfully written to .env file."
-                                exit 0
-                            else
-                                echo "\$EDITOR is not set. Please set the \$EDITOR environment variable to your preferred text editor."
-                                exit 1
-                            fi
+                            rm -f .env
+                            echo "Enter .env content:"
+                            input INTRA_LOGIN
+                            input MARIADB_DATABASE
+                            input MARIADB_USER
+                            input MARIADB_PASSWORD
+                            input WORDPRESS_TITLE
+                            input WORDPRESS_USER
+                            input WORDPRESS_PASSWORD
+                            input WORDPRESS_EMAIL
+                            cp .env ../srcs/.env
+                            echo "Successfully written to .env file."
+                            exit 0
                             ;;
                         [Nn][Oo]|[Nn])
                             exit 1
