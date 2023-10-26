@@ -42,7 +42,7 @@ input() {
                             input WORDPRESS_USER
                             input WORDPRESS_PASSWORD
                             input WORDPRESS_EMAIL
-                            cp .env ../srcs/.env
+                            mv .env ../srcs/.env
                             echo "Successfully written to .env file."
                             exit 0
                             ;;

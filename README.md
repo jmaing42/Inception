@@ -6,6 +6,8 @@
 
 see Makefile
 
+- all: mandatory part
+- bonus: add bonus part
 - init: initialize environment variables, volume directories
 - clean: clean environment variables
 - fclean: clean volume directories if environment variables available, and clean

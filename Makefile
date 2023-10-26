@@ -6,6 +6,10 @@ all:
 	$(MAKE) init
 	$(MAKE) up
 
+.PHONY: bonus
+bonus: all
+	sh src/bonus.sh
+
 .PHONY: init
 init: .intra_login.txt prelude
 	@[ -t 0 ] || echo "You MUST set hostname manually!"
